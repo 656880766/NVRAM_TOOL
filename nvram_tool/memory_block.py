@@ -43,23 +43,25 @@ class MemoryBlock:
             return False
 
         # Vérifier le nombre de variables
-        if len(self.variables) < 2:
+        if len(set(self.variables)) < 2:
             return False
-
+        print(len(self.variables) != len(set(self.onfly_functions)))
         # Vérifier les spécificités des blocs ONFLY
-        if self.store_timing == 'ONFLY' and not all(self.onfly_functions):
-            return False
+        if self.store_timing == 'ONFLY':
+            if len(self.variables) != len(self.onfly_functions):
+                return False
+            # Vérifier les spécificités des blocs RESET_SAFE (y compris POST_RUN)
+            elif len(self.variables) != len(self.reset_safe_schedules) and not all(self.is_valid_schedule(schedule) for schedule in self.reset_safe_schedules):
+                return False
+
 
         # Vérifier les spécificités des blocs POWER_LATCH_MODE
-        if self.store_timing != 'POWER_LATCH_MODE':
-            return False
+        if self.store_timing == 'POWER_LATCH_MODE' or self.store_timing == 'POST_RUN_MODE':
+            if self.reset_safe:
+                if len(self.variables) != len(self.reset_safe_schedules) and not all(self.is_valid_schedule(schedule) for schedule in self.reset_safe_schedules):
+                    return False
 
-        # Vérifier les spécificités des blocs RESET_SAFE (y compris POST_RUN)
-        if self.reset_safe:
-            if not all(self.reset_safe_schedules):
-                return False
-            if not all(self.is_valid_schedule(schedule) for schedule in self.reset_safe_schedules):
-                return False
+
 
         return True
 

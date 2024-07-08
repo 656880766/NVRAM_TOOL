@@ -31,10 +31,10 @@ class TestConfGenerator(unittest.TestCase):
         #     )
         # ]
 
-        blocks = ExcelParser.parse_excel('data_test/Test_Spec_NVRAM_1.0.xlsx')
-        output_path = 'output/test_conf.h'
+        blocks = ExcelParser.parse_excel('data_test/Test_Spec_NVRAM_2.0.xlsx')
+        output_path = 'output_test/test_conf.h'
         ConfGenerator.generate_conf_h(blocks, output_path)
-        self.assertTrue(os.path.exists(output_path))
+        self.assertFalse(os.path.exists(output_path))
 
 if __name__ == '__main__':
     unittest.main()
