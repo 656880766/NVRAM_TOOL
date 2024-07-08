@@ -51,7 +51,7 @@ class MemoryBlock:
             return False
 
         # Vérifier les spécificités des blocs POWER_LATCH_MODE
-        if self.store_timing == 'POWER_LATCH_MODE' and 'Crc8_u8' not in self.variables:
+        if self.store_timing != 'POWER_LATCH_MODE':
             return False
 
         # Vérifier les spécificités des blocs RESET_SAFE (y compris POST_RUN)

@@ -2,7 +2,6 @@ import unittest
 from nvram_tool.memory_block import MemoryBlock
 
 class TestMemoryBlock(unittest.TestCase):
-
     def test_valid_memory_block(self):
         block = MemoryBlock(
             name="TestBlock",
@@ -22,8 +21,8 @@ class TestMemoryBlock(unittest.TestCase):
             data_types=["uint8"] * 700,
             store_timing="ONFLY",
             reset_safe=True,
-            onfly_functions=["func1"] * 700,
-            reset_safe_schedules=["10ms"] * 700
+            onfly_functions=["func1"],
+            reset_safe_schedules=["dix-ms"]
         )
         self.assertFalse(block.is_valid())
 

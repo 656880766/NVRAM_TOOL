@@ -4766,7 +4766,7 @@ generate_test_data.py
 1. Cloner le dépôt :
 
    ```bash
-   git clone <URL_DU_DEPOT>
+   git clone https://github.com/656880766/NVRAM_TOOL.git
    cd nvram_tool
    
 ## Crée un environnement virtuel
@@ -4778,7 +4778,7 @@ pip install -r requirements.txt
 
 ## Utilisation
 
-python generate_test_data.py
+
 python nvram_tool/main.py
 python -m unittest discover tests/
 

@@ -6,7 +6,7 @@ from nvram_tool.memory_block import MemoryBlock
 class TestExcelParser(unittest.TestCase):
 
     def test_parse_excel(self):
-        blocks = ExcelParser.parse_excel('data/Spec_NVRAM_1.0.xlsx')
+        blocks = ExcelParser.parse_excel('data_test/Spec_NVRAM_1.0.xlsx')
         self.assertGreater(len(blocks), 0)
         for block in blocks:
             self.assertIsInstance(block, MemoryBlock)
