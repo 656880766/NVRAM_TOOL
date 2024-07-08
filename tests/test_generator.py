@@ -30,11 +30,17 @@ class TestConfGenerator(unittest.TestCase):
         #         reset_safe_schedules=["10ms", "20ms"]
         #     )
         # ]
+#Tester si onfly et post ou power launch sont valident
 
-        blocks = ExcelParser.parse_excel('data_test/Test_Spec_NVRAM_2.0.xlsx')
-        output_path = 'output_test/test_conf.h'
-        ConfGenerator.generate_conf_h(blocks, output_path)
-        self.assertFalse(os.path.exists(output_path))
+        blocksValid = ExcelParser.parse_excel('data_test/TestValid.xlsx')
+        blocksNotValid = ExcelParser.parse_excel('data_test/TestValid.xlsx')
+        output_path_valid = 'output_test/TestValid_conf.h'
+        output_path_not_valid = 'output_test/TestNotValid_conf.h'
+        ConfGenerator.generate_conf_h(blocksValid, output_path_valid)
+        self.assertTrue(os.path.exists(output_path_not_valid))
+        ConfGenerator.generate_conf_h(blocksNotValid, output_path_not_valid)
+        self.assertFalse(os.path.exists(output_path_not_valid))
+
 
 if __name__ == '__main__':
     unittest.main()

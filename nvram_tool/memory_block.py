@@ -92,10 +92,12 @@ class MemoryBlock:
 
         :return: Représentation C du bloc mémoire
         """
-        struct = f"// Block: {self.name}\nstruct {self.name} {{\n"
+
+        struct = f"/* START definitions for Block \'{self.name}\' */ \n\n typedef struct {{\n"
         if self.store_timing == "POWER_LATCH_MODE":
-            struct += "    uint8_t Crc8_u8;\n"
+            struct += " /* CRC value for current block */ \n   uint8_t Crc8_u8;\n /* variables definition */ \n "
         for var, dtype in zip(self.variables, self.data_types):
             struct += f"    {dtype} {var};\n"
-        struct += "};\n\n"
+        struct += "}" + f"{self.name}_t  ; \n\n "
+        struct +=  f"extern  {self.name}_t  {self.name}_CST_RamBlk; \n\n "
         return struct

@@ -28,7 +28,6 @@ class ExcelParser:
         for _, row in df.iterrows():
             block_name = row['BLOCK']
            # variable_name = row['Variable Name']
-
             blocks_dict[block_name]["variables"].append(row['Variable Name'])
             blocks_dict[block_name]["data_types"].append(row['DataType'])
             if blocks_dict[block_name]["store_timing"] is None:
