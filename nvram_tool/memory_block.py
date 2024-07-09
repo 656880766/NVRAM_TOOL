@@ -29,41 +29,44 @@ class MemoryBlock:
     def __repr__(self):
         return (f"MemoryBlock(name={self.name}, variables={self.variables}, data_types={self.data_types}, "
                 f"store_timing={self.store_timing}, reset_safe={self.reset_safe}, "
-                f"onfly_functions={self.onfly_functions}, reset_safe_schedules={self.reset_safe_schedules})")
+                f"onfly_functions={self.onfly_functions}, reset_safe_schedules={self.reset_safe_schedules})\n")
 
     def is_valid(self):
         """
-        Vérifie la validité du bloc mémoire selon les critères spécifiés.
+              Vérifie la validité du bloc mémoire selon les critères spécifiés.
 
-        :return: True si le bloc est valide, False sinon
+              :return: (True, "") si le bloc est valide, (False, "Message d'erreur") sinon
+
         """
         # Calculer la taille totale des variables
         total_size = sum([self.get_size(dtype) for dtype in self.data_types])
         if total_size > 600:
-            return False
+            return False, "La taille totale des variables dépasse 600 octets."
 
         # Vérifier le nombre de variables
         if len(set(self.variables)) < 2:
-            return False
-        print(len(self.variables) != len(set(self.onfly_functions)))
+            return False, "Le bloc mémoire doit contenir au moins 2 variables différentes."
+
         # Vérifier les spécificités des blocs ONFLY
         if self.store_timing == 'ONFLY':
             if len(self.variables) != len(self.onfly_functions):
-                return False
+                return False, "Le bloc ONFLY doit avoir des fonctions spécifiées pour toutes ses variables."
             # Vérifier les spécificités des blocs RESET_SAFE (y compris POST_RUN)
-            elif len(self.variables) != len(self.reset_safe_schedules) and not all(self.is_valid_schedule(schedule) for schedule in self.reset_safe_schedules):
-                return False
+            elif len(self.variables) != len(self.reset_safe_schedules):
+                return False, "Pour le bloc ONFLY La  RESETSAFE Scheduling Information doit avoir des informations de planification spécifiées pour toutes ses variables"
 
+            elif not all(self.is_valid_schedule(schedule) for schedule in self.reset_safe_schedules):
+                return False, "Un des  formats de la périodicité  est invalide pour une variable"
 
         # Vérifier les spécificités des blocs POWER_LATCH_MODE
         if self.store_timing == 'POWER_LATCH_MODE' or self.store_timing == 'POST_RUN_MODE':
             if self.reset_safe:
                 if len(self.variables) != len(self.reset_safe_schedules) and not all(self.is_valid_schedule(schedule) for schedule in self.reset_safe_schedules):
-                    return False
+                    return False, "Pour le Store Timing  la  RESETSAFE Scheduling Information doit avoir des informations de planification spécifiées pour toutes ses variables ou Le format de la périodicité  est invalide pour une variable"
 
 
 
-        return True
+        return True,""
 
     @staticmethod
     def get_size(data_type):
@@ -95,7 +98,7 @@ class MemoryBlock:
 
         struct = f"/* START definitions for Block \'{self.name}\' */ \n\n typedef struct {{\n"
         if self.store_timing == "POWER_LATCH_MODE":
-            struct += " /* CRC value for current block */ \n   uint8_t Crc8_u8;\n /* variables definition */ \n "
+            struct += " \t/* CRC value for current block */ \n   uint8_t Crc8_u8;\n \t/* variables definition */ \n"
         for var, dtype in zip(self.variables, self.data_types):
             struct += f"    {dtype} {var};\n"
         struct += "}" + f"{self.name}_t  ; \n\n "

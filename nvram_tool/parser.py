@@ -53,4 +53,7 @@ class ExcelParser:
                 reset_safe_schedules=block_data.get('reset_safe_schedules', [])
             )
             blocks.append(block)
+
+        # Trier les blocs par leur nom
+        blocks = sorted(blocks, key=lambda x: x.name)
         return blocks

@@ -18,12 +18,12 @@ def main():
             log_file.write("\n\n")
 
  #   blocks_n1 = ExcelParser.parse_excel('../data/Spec_NVRAM_2.0.xlsx')
-        blocks_n1 = ExcelParser.parse_excel('../tests/data_test/TestValid.xlsx')
-        #blocks_n1 = ExcelParser.parse_excel('../data/Spec_NVRAM_2.0.xlsx')
+        #blocks_n1 = ExcelParser.parse_excel('../tests/data_test/TestValid.xlsx')
+        blocks_n1 = ExcelParser.parse_excel('../data/Spec_NVRAM_2.0.xlsx')
 
     # Ecrire dans le fichier de journalisation les blocs memoires et leurs status
     with open('../output/statusBlockLogs.txt', 'w') as log_file:
-         log_file.write((str(blocks_n1)))
+         log_file.write((str(blocks_n1) + "\n\n"))
 
     print(blocks_n1)  # Print blocks to debug
     ConfGenerator.generate_conf_h(blocks_n1, '../output/conf.h')
