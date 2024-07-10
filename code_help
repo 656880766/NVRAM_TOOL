@@ -1,0 +1,25 @@
+   # Vérifier les spécificités des blocs ONFLY
+        if self.store_timing == 'ONFLY' and not all(self.onfly_functions):
+            return False
+
+        # Vérifier les spécificités des blocs POWER_LATCH_MODE
+        if self.store_timing == 'POWER_LATCH_MODE' and 'Crc8_u8' not in self.variables:
+            return False
+
+        # Vérifier les spécificités des blocs RESET_SAFE (y compris POST_RUN)
+        if self.reset_safe:
+            if not all(self.reset_safe_schedules):
+                return False
+            if not all(self.is_valid_schedule(schedule) for schedule in self.reset_safe_schedules):
+                return False
+
+
+
+
+
+                # Vérifier les spécificités des blocs RESET_SAFE (y compris POST_RUN)
+        if self.reset_safe:
+            if not all(self.reset_safe_schedules):
+                return False
+            if not all(self.is_valid_schedule(schedule) for schedule in self.reset_safe_schedules):
+                return False

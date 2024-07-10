@@ -17,7 +17,7 @@ def main():
             log_file.write(diff.to_string())
             log_file.write("\n\n")
 
- #   blocks_n1 = ExcelParser.parse_excel('../data/Spec_NVRAM_2.0.xlsx')
+ #blocks_n1 = ExcelParser.parse_excel('../data/Spec_NVRAM_2.0.xlsx')
         #blocks_n1 = ExcelParser.parse_excel('../tests/data_test/TestValid.xlsx')
         blocks_n1 = ExcelParser.parse_excel('../data/Spec_NVRAM_2.0.xlsx')
 
